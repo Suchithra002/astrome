@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      background-color: #fff;
+    }
+    .container {
+      width: 200px;
+      height: 200px;
+      background: #000;
+      border: 20px solid #000;
+      display:flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 5px;
+      margin-top: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    .color {
+      width: 40px;
+      height: 100%;
+      background: purple;
+      position: absolute;
+      bottom: 0;
+      /* align-items: baseline; */
+      
+    }
+    
+    .color:nth-child(2) {
+      background: rgb(185, 142, 187);
+    }
+    .color:nth-child(3) {
+      background: lightcoral;
+    }
+    .color:nth-child(4) {
+      background: rgb(213, 213, 95);
+    }
+    .color:nth-child(5) {
+      background: lightsalmon;
+    }
+    .buttons {
+      display: flex;
+      margin-top: 20px;
+    }
+    button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+    }
+    .start {
+      background-color: rgb(96, 167, 96);
+      color: white;
+    }
+    .reset {
+      background-color: violet;
+      color: white;
+    }
+    .stop {
+      background-color: red;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="color"></div>
+    <div class="color" style="left: 40px;"></div>
+    <div class="color" style="left: 80px;"></div>
+    <div class="color" style="left: 120px;"></div>
+    <div class="color" style="left: 160px;"></div>
+  </div>
+  <div class="buttons">
+    <button class="start" onclick="startMoving()">Start</button>
+    <button class="reset" onclick="resetMoving()">Reset</button>
+    <button class="stop" onclick="stopMoving()">Stop</button>
+  </div>
+
+  <script>
+    let colors = document.querySelectorAll('.color');
+    let isMoving = false;
+    let interval;
+
+    function startMoving() {
+      if (!isMoving) {
+        isMoving = true;
+        for (let i = 0; i < colors.length; i++) {
+          animateColor(colors[i]);
+        }
+      }
+    }
+
+    function animateColor(color) {
+      let randomHeight = Math.floor(Math.random() * 80) + 10;
+      color.style.transition = `all ${Math.random() * 2 + 0.5}s ease-in-out`;
+      color.style.top = `${randomHeight}%`;
+      setTimeout(() => {
+        if (isMoving) {
+          animateColor(color);
+        }
+      }, Math.random() * 2000 + 500);
+    }
+
+    // function resetMoving() {
+    //   isMoving = false;
+    //   clearInterval(interval);
+    //   colors.forEach(color => {
+    //     color.style.transition = 'none';
+    //     void color.offsetWidth;
+    //     color.style.bottom = '0';
+    //   });
+    // }
+
+    function resetMoving() {
+      isMoving = false;
+      clearInterval(interval);
+      colors.forEach(color => {
+        color.style.transition = 'none';
+        color.style.top = '0%';
+        // void color.offsetWidth;
+        color.style.bottom = '0';
+      });
+    }
+
+    function stopMoving() {
+      isMoving = false;
+      clearInterval(interval);
+    }
+  </script>
+</body>
+</html>
